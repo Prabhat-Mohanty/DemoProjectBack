@@ -478,7 +478,6 @@ namespace OnlineLibraryManagementSystem.Controllers
                 var forgotPasswordLink = Url.Action(nameof(ResetPassword), "Authentication", new { token, email = user.Email }, Request.Scheme);
 
                 var message = new Message(new string[] { user.Email! }, "Click this below link", forgotPasswordLink!);
-                //var message = new Message(new string[] { user.Email! }, "Click this below link", $"Please Confirm your account <a href='http://localhost:4200/register'>Click Me</a>");
                 _emailService.SendEmail(message);
 
                 return StatusCode(StatusCodes.Status200OK, new Response() { Status = "Success", Message = $"Password Change Request Is Sent to {user.Email}. Please Open Your Gmail And Click The Link." });
