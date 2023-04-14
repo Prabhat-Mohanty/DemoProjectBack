@@ -1,0 +1,88 @@
+{
+  "Version": 1,
+  "Hash": "sdUuKvTdz3XhOsy20pwH69qkk5rAzxLL4k/W4dCAXWA=",
+  "Source": "OnlineLibraryManagementSystem",
+  "BasePath": "_content/OnlineLibraryManagementSystem",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "OnlineLibraryManagementSystem\\wwwroot",
+      "Source": "OnlineLibraryManagementSystem",
+      "ContentRoot": "C:\\Users\\lcom\\Desktop\\MCAProject\\OnlineLibraryManagementSystem\\OnlineLibraryManagementSystem\\wwwroot\\",
+      "BasePath": "_content/OnlineLibraryManagementSystem",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [
+    {
+      "Identity": "C:\\Users\\lcom\\Desktop\\MCAProject\\OnlineLibraryManagementSystem\\OnlineLibraryManagementSystem\\wwwroot\\uploads\\ghgcfhfghfghfgh\\ProfilePic.jpg",
+      "SourceId": "OnlineLibraryManagementSystem",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\lcom\\Desktop\\MCAProject\\OnlineLibraryManagementSystem\\OnlineLibraryManagementSystem\\wwwroot\\",
+      "BasePath": "_content/OnlineLibraryManagementSystem",
+      "RelativePath": "uploads/ghgcfhfghfghfgh/ProfilePic.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\uploads\\ghgcfhfghfghfgh\\ProfilePic.jpg"
+    },
+    {
+      "Identity": "C:\\Users\\lcom\\Desktop\\MCAProject\\OnlineLibraryManagementSystem\\OnlineLibraryManagementSystem\\wwwroot\\uploads\\PrabhatMohanty\\ProfilePic.jpg",
+      "SourceId": "OnlineLibraryManagementSystem",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\lcom\\Desktop\\MCAProject\\OnlineLibraryManagementSystem\\OnlineLibraryManagementSystem\\wwwroot\\",
+      "BasePath": "_content/OnlineLibraryManagementSystem",
+      "RelativePath": "uploads/PrabhatMohanty/ProfilePic.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\uploads\\PrabhatMohanty\\ProfilePic.jpg"
+    },
+    {
+      "Identity": "C:\\Users\\lcom\\Desktop\\MCAProject\\OnlineLibraryManagementSystem\\OnlineLibraryManagementSystem\\wwwroot\\uploads\\PrabhatMohanty\\Screenshot (2).png",
+      "SourceId": "OnlineLibraryManagementSystem",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\lcom\\Desktop\\MCAProject\\OnlineLibraryManagementSystem\\OnlineLibraryManagementSystem\\wwwroot\\",
+      "BasePath": "_content/OnlineLibraryManagementSystem",
+      "RelativePath": "uploads/PrabhatMohanty/Screenshot (2).png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\uploads\\PrabhatMohanty\\Screenshot (2).png"
+    },
+    {
+      "Identity": "C:\\Users\\lcom\\Desktop\\MCAProject\\OnlineLibraryManagementSystem\\OnlineLibraryManagementSystem\\wwwroot\\uploads\\PrabhatsMohanty\\ProfilePic.jpg",
+      "SourceId": "OnlineLibraryManagementSystem",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\lcom\\Desktop\\MCAProject\\OnlineLibraryManagementSystem\\OnlineLibraryManagementSystem\\wwwroot\\",
+      "BasePath": "_content/OnlineLibraryManagementSystem",
+      "RelativePath": "uploads/PrabhatsMohanty/ProfilePic.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\uploads\\PrabhatsMohanty\\ProfilePic.jpg"
+    }
+  ]
+}

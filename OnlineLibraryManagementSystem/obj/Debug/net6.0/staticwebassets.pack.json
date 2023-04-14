@@ -1,0 +1,37 @@
+{
+  "Files": [
+    {
+      "Id": "C:\\Users\\lcom\\Desktop\\MCAProject\\OnlineLibraryManagementSystem\\OnlineLibraryManagementSystem\\wwwroot\\uploads\\PrabhatMohanty\\ProfilePic.jpg",
+      "PackagePath": "staticwebassets\\uploads\\PrabhatMohanty\\ProfilePic.jpg"
+    },
+    {
+      "Id": "C:\\Users\\lcom\\Desktop\\MCAProject\\OnlineLibraryManagementSystem\\OnlineLibraryManagementSystem\\wwwroot\\uploads\\PrabhatMohanty\\Screenshot (2).png",
+      "PackagePath": "staticwebassets\\uploads\\PrabhatMohanty\\Screenshot (2).png"
+    },
+    {
+      "Id": "C:\\Users\\lcom\\Desktop\\MCAProject\\OnlineLibraryManagementSystem\\OnlineLibraryManagementSystem\\wwwroot\\uploads\\PrabhatsMohanty\\ProfilePic.jpg",
+      "PackagePath": "staticwebassets\\uploads\\PrabhatsMohanty\\ProfilePic.jpg"
+    },
+    {
+      "Id": "C:\\Users\\lcom\\Desktop\\MCAProject\\OnlineLibraryManagementSystem\\OnlineLibraryManagementSystem\\wwwroot\\uploads\\ghgcfhfghfghfgh\\ProfilePic.jpg",
+      "PackagePath": "staticwebassets\\uploads\\ghgcfhfghfghfgh\\ProfilePic.jpg"
+    },
+    {
+      "Id": "obj\\Debug\\net6.0\\staticwebassets\\msbuild.OnlineLibraryManagementSystem.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net6.0\\staticwebassets\\msbuild.build.OnlineLibraryManagementSystem.props",
+      "PackagePath": "build\\OnlineLibraryManagementSystem.props"
+    },
+    {
+      "Id": "obj\\Debug\\net6.0\\staticwebassets\\msbuild.buildMultiTargeting.OnlineLibraryManagementSystem.props",
+      "PackagePath": "buildMultiTargeting\\OnlineLibraryManagementSystem.props"
+    },
+    {
+      "Id": "obj\\Debug\\net6.0\\staticwebassets\\msbuild.buildTransitive.OnlineLibraryManagementSystem.props",
+      "PackagePath": "buildTransitive\\OnlineLibraryManagementSystem.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

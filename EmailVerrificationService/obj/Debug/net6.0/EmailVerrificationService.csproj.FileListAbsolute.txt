@@ -1,0 +1,12 @@
+C:\Users\lcom\Desktop\MCAProject\OnlineLibraryManagementSystem\EmailVerrificationService\bin\Debug\net6.0\EmailVerrificationService.deps.json
+C:\Users\lcom\Desktop\MCAProject\OnlineLibraryManagementSystem\EmailVerrificationService\bin\Debug\net6.0\EmailVerrificationService.dll
+C:\Users\lcom\Desktop\MCAProject\OnlineLibraryManagementSystem\EmailVerrificationService\bin\Debug\net6.0\EmailVerrificationService.pdb
+C:\Users\lcom\Desktop\MCAProject\OnlineLibraryManagementSystem\EmailVerrificationService\obj\Debug\net6.0\EmailVerrificationService.csproj.AssemblyReference.cache
+C:\Users\lcom\Desktop\MCAProject\OnlineLibraryManagementSystem\EmailVerrificationService\obj\Debug\net6.0\EmailVerrificationService.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\lcom\Desktop\MCAProject\OnlineLibraryManagementSystem\EmailVerrificationService\obj\Debug\net6.0\EmailVerrificationService.AssemblyInfoInputs.cache
+C:\Users\lcom\Desktop\MCAProject\OnlineLibraryManagementSystem\EmailVerrificationService\obj\Debug\net6.0\EmailVerrificationService.AssemblyInfo.cs
+C:\Users\lcom\Desktop\MCAProject\OnlineLibraryManagementSystem\EmailVerrificationService\obj\Debug\net6.0\EmailVerrificationService.csproj.CoreCompileInputs.cache
+C:\Users\lcom\Desktop\MCAProject\OnlineLibraryManagementSystem\EmailVerrificationService\obj\Debug\net6.0\EmailVerrificationService.dll
+C:\Users\lcom\Desktop\MCAProject\OnlineLibraryManagementSystem\EmailVerrificationService\obj\Debug\net6.0\refint\EmailVerrificationService.dll
+C:\Users\lcom\Desktop\MCAProject\OnlineLibraryManagementSystem\EmailVerrificationService\obj\Debug\net6.0\EmailVerrificationService.pdb
+C:\Users\lcom\Desktop\MCAProject\OnlineLibraryManagementSystem\EmailVerrificationService\obj\Debug\net6.0\ref\EmailVerrificationService.dll
