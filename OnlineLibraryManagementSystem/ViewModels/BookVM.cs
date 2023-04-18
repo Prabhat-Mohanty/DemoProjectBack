@@ -40,6 +40,10 @@ namespace OnlineLibraryManagementSystem.ViewModels
 
         [Range(1, 5, ErrorMessage = "Ratings must be between 1 and 5")]
         public int Ratings { get; set; }        //Ratings
+        
         public List<int>?  AuthorIds { get; set; }      //AuthorIds
+
+        public List<FormFile>? Images { get; set; }
+
     }
 }

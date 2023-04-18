@@ -10,13 +10,11 @@ using OnlineLibraryManagementSystem.Models;
 using OnlineLibraryManagementSystem.Models.Authentication.Login;
 using OnlineLibraryManagementSystem.Models.Authentication.SignUp;
 using System.ComponentModel.DataAnnotations;
-using System.Data.Common;
 using System.IdentityModel.Tokens.Jwt;
-using System.Net.Mail;
 using System.Security.Claims;
 using System.Text;
-using System.Security.Cryptography;
-using static System.Net.WebRequestMethods;
+using System.Web;
+using System;
 
 namespace OnlineLibraryManagementSystem.Controllers
 {
@@ -113,41 +111,84 @@ namespace OnlineLibraryManagementSystem.Controllers
             return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "This User Doesnot exists" });
         }
 
+
+        [HttpPost]
+        [Route("updateProfile")]
+        public async Task<IActionResult> UpdateProfile([FromForm] RegisterUser registerUser)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var user =  await _userManager.FindByEmailAsync(registerUser.Email);
+
+            user.FirstName = registerUser.FirstName;
+            user.LastName = registerUser.LastName;
+            user.Email = registerUser.Email;
+            user.PhoneNumber = registerUser.PhoneNumber;
+            user.DOB = registerUser.DOB;
+            user.Gender = registerUser.Gender;
+            user.City = registerUser.City;
+            user.State = registerUser.State;
+            user.Pincode = registerUser.Pincode;
+            user.FullAddress = registerUser.FullAddress;
+
+            if (registerUser.ProfilePicture != null)
+            {
+                user.ProfilePicture = GetFileName(registerUser);
+            }
+
+            var result = await _userManager.UpdateAsync(user);
+
+            if (result.Succeeded)
+            {
+                return Ok(new Response { Status = "Success", Message = "Profile updated successfully!" });
+            }
+
+            return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Failed to update profile." });
+        }
+
+        [Authorize]
+        [HttpGet]
+        [Route("updateProfile")]
+        public async Task<IActionResult> UpdateProfile()
+        {
+            var user = await _userManager.FindByEmailAsync(HttpContext?.User?.Identity?.Name);
+            return Ok(user);
+        }
+
+
         [NonAction]
         private string GetFileName(RegisterUser registerUser)
         {
             if (registerUser.ProfilePicture != null)
             {
-                string path = _webHostEnvironment.WebRootPath + "\\uploads\\" + registerUser.FirstName + registerUser.LastName + "\\";
+                string path = _webHostEnvironment.WebRootPath + "\\uploads\\" + registerUser.FirstName + registerUser.Email + "\\";
+                string fileName = registerUser.ProfilePicture.FileName;
 
                 if (!Directory.Exists(path))
                 {
                     Directory.CreateDirectory(path);
                 }
+                else
+                {
+                    Directory.Delete(path, true);
+                    Directory.CreateDirectory(path);
+                }
 
-                using (FileStream fileStream = System.IO.File.Create(path + registerUser.ProfilePicture.FileName))
+                string filePath = Path.Combine(path, fileName);
+
+                using (FileStream fileStream = System.IO.File.Create(filePath))
                 {
                     registerUser.ProfilePicture.CopyTo(fileStream);
                     fileStream.Flush();
-                    return path + registerUser.ProfilePicture.FileName;
+                    return filePath;
                 }
             }
             return "Not Uploaded";
         }
 
-
-
-        //if (user.TwoFactorEnabled)
-        //{
-        //    await _signInManager.SignOutAsync();
-        //    await _signInManager.PasswordSignInAsync(user, loginModel.Password, false, true);
-        //    var token = await _userManager.GenerateTwoFactorTokenAsync(user, "Email");
-
-        //    var message = new Message(new string[] { user.Email! }, "OTP Confirmation", token);
-        //    _emailService.SendEmail(message);
-
-        //    return StatusCode(StatusCodes.Status200OK, new Response() { Status = "Success", Message = $"We have sent an OTP to your email {user.Email}" });
-        //}
 
         [HttpPost]
         [Route("login")]
@@ -192,281 +233,9 @@ namespace OnlineLibraryManagementSystem.Controllers
             return Unauthorized(new Response() { Status = "Error", Message = "Invalid Email or Password" });
         }
 
-        [HttpPost]
-        [Route("login2FA")]
-        public async Task<IActionResult> LoginWithOTP(string code, string email)
-        {
-            try
-            {
-
-                // Validate input
-                if (string.IsNullOrEmpty(code) || string.IsNullOrEmpty(email))
-                {
-                    return BadRequest(new Response() { Status = "Error", Message = "Invalid input parameters" });
-                }
-
-                var user = await _userManager.FindByEmailAsync(email);
-                if (!await _userManager.IsEmailConfirmedAsync(user))
-                {
-                    return StatusCode(StatusCodes.Status401Unauthorized, new Response() { Status = "Error", Message = "Email not confirmed" });
-                }
-
-
-                var signIn = await _signInManager.TwoFactorSignInAsync("Email", code, false, false); //string provider, string code, bool isPersistent, bool rememberClient
-
-                if (signIn.Succeeded)
-                {
-                    if (user != null)
-                    {
-                        // ClaimList Creation
-                        var authClaims = new List<Claim>
-                {
-                    new Claim(ClaimTypes.Name, user.UserName),
-                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                };
-
-                        var userRoles = await _userManager.GetRolesAsync(user);
-
-                        //We Add Roles To The List
-                        foreach (var role in userRoles)
-                        {
-                            authClaims.Add(new Claim(ClaimTypes.Role, role));
-                        }
-
-                        var jwtToken = GetToken(authClaims);
-
-                        //Return The Token
-                        return Ok(new
-                        {
-                            token = new JwtSecurityTokenHandler().WriteToken(jwtToken),
-                            expiration = jwtToken.ValidTo
-                        });
-                    }
-                }
-
-                return StatusCode(StatusCodes.Status404NotFound, new Response() { Status = "Error", Message = "Invalid code" });
-            }
-            catch (Exception ex)
-            {
-                // Handle specific exceptions
-                if (ex is ArgumentNullException || ex is ArgumentOutOfRangeException)
-                {
-                    return BadRequest(new Response { Status = "Error", Message = "Invalid input parameters" });
-                }
-                else if (ex is InvalidOperationException || ex is NotSupportedException || ex is DbException || ex is IOException || ex is HttpRequestException || ex is SmtpException)
-                {
-                    return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = ex.Message });
-                }
-                else
-                {
-                    throw; // re-throw unexpected exceptions
-                }
-            }
-        }
-
-
-        //[HttpPost]
-        //[Route("login2FA")]
-        //public async Task<IActionResult> LoginWithOTP(string code, string email)
-        //{
-        //    var user = await _userManager.FindByEmailAsync(email);
-        //    if (!await _userManager.IsEmailConfirmedAsync(user))
-        //    {
-        //        return BadRequest("You cannot logged in because you have not confirmed your email address which we have sent you when you signed in.");
-        //    }
-
-        //    if(!user.EmailConfirmed)
-        //    {
-        //        return BadRequest("You cannot logged in because you have not confirmed your email address which we have sent you when you signed in.");
-        //    }
-
-        //    var signIn = await _signInManager.TwoFactorSignInAsync("Email", code, false, false); //string provider, string code, bool isPersistent, bool rememberClient
-        //    if (signIn.Succeeded)
-        //    {
-        //        if (user != null)
-        //        {
-        //            // ClaimList Creation
-        //            var authClaims = new List<Claim>
-        //            {
-        //                new Claim(ClaimTypes.Name, user.UserName),
-        //                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-        //            };
-
-        //            var userRoles = await _userManager.GetRolesAsync(user);
-
-        //            //We Add Roles To The List
-        //            foreach (var role in userRoles)
-        //            {
-        //                authClaims.Add(new Claim(ClaimTypes.Role, role));
-        //            }
-
-
-        //            var jwtToken = GetToken(authClaims);
-
-
-        //            //Return The Token
-        //            return Ok(new
-        //            {
-        //                token = new JwtSecurityTokenHandler().WriteToken(jwtToken),
-        //                expiration = jwtToken.ValidTo
-        //            });
-        //        }
-        //    }
-        //    return StatusCode(StatusCodes.Status404NotFound, new Response() { Status = "Error", Message = "Invalid Code " });
-        //}
-
-
-        //[HttpPost]
-        //[Route("login")]
-        //public async Task<IActionResult> Login([FromBody] LoginModel loginModel, bool rememberMe)
-        //{
-        //    // Check the User
-        //    var user = await _userManager.FindByEmailAsync(loginModel.Email);
-
-        //    //Generate The Token With The Claims
-        //    if (user.TwoFactorEnabled)
-        //    {
-        //        await _signInManager.SignOutAsync();
-        //        await _signInManager.PasswordSignInAsync(user, loginModel.Password, false, true);
-        //        var token = await _userManager.GenerateTwoFactorTokenAsync(user, "Email");
-
-        //        var message = new Message(new string[] { user.Email! }, "OTP Confirmation", token);
-        //        _emailService.SendEmail(message);
-
-        //        return StatusCode(StatusCodes.Status200OK, new Response() { Status = "Success", Message = $"We have sent an OTP to your email {user.Email}" });
-        //    }
-
-        //    // Check the Password
-        //    if (user != null && await _userManager.CheckPasswordAsync(user, loginModel.Password))
-        //    {
-        //        // ClaimList Creation
-        //        var authClaims = new List<Claim>
-        //{
-        //    new Claim(ClaimTypes.Name, user.UserName),
-        //    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-        //};
-
-        //        var userRoles = await _userManager.GetRolesAsync(user);
-
-        //        //We Add Roles To The List
-        //        foreach (var role in userRoles)
-        //        {
-        //            authClaims.Add(new Claim(ClaimTypes.Role, role));
-        //        }
-
-        //        var jwtToken = GetToken(authClaims);
-
-        //        // Store OTP in cookie if rememberMe is true
-        //        if (rememberMe)
-        //        {
-        //            var options = new CookieOptions
-        //            {
-        //                Expires = DateTime.Now.AddDays(1),
-        //                IsEssential = true,
-        //                HttpOnly = true,
-        //                SameSite = SameSiteMode.Strict,
-        //                Secure = true // Set to true for HTTPS only
-        //            };
-        //            Response.Cookies.Append("otp", jwtToken.ToString(), options);
-        //        }
-
-        //        //Return The Token
-        //        return Ok(new
-        //        {
-        //            token = new JwtSecurityTokenHandler().WriteToken(jwtToken),
-        //            expiration = jwtToken.ValidTo
-        //        });
-        //    }
-
-        //    return Unauthorized();
-        //}
-
-
-        //[HttpPost]
-        //[Route("login-2FA")]
-        //public async Task<IActionResult> LoginWithOTP(string code, string email)
-        //{
-        //    var user = await _userManager.FindByEmailAsync(email);
-
-        //    // Check if OTP is in cookie
-        //    if (Request.Cookies.TryGetValue("otp", out var otp))
-        //    {
-        //        var jwtToken = new JwtSecurityTokenHandler().ReadJwtToken(otp);
-        //        if (jwtToken.ValidTo >= DateTime.UtcNow)
-        //        {
-        //            // Remove OTP from cookie
-        //            Response.Cookies.Delete("otp");
-
-        //            if (user != null)
-        //            {
-        //                // ClaimList Creation
-        //                var authClaims = new List<Claim>
-        //        {
-        //            new Claim(ClaimTypes.Name, user.UserName),
-        //            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-        //        };
-
-        //                var userRoles = await _userManager.GetRolesAsync(user);
-
-        //                //We Add Roles To The List
-        //                foreach (var role in userRoles)
-        //                {
-        //                    authClaims.Add(new Claim(ClaimTypes.Role, role));
-        //                }
-
-        //                var jwtTokenWithClaims = GetToken(authClaims);
-
-        //                //Return The Token
-        //                return Ok(new
-        //                {
-        //                    token = new JwtSecurityTokenHandler().WriteToken(jwtTokenWithClaims),
-        //                    expiration = jwtTokenWithClaims.ValidTo
-        //                });
-        //            }
-        //        }
-        //    }
-
-        //    var signIn = await _signInManager.TwoFactorSignInAsync("Email", code, false, false);
-        //    if (signIn.Succeeded)
-        //    {
-        //        if (user != null)
-        //        {
-        //            // ClaimList Creation
-        //            var authClaims = new List<Claim>
-        //    {
-        //        new Claim(ClaimTypes.Name, user.UserName),
-        //        new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-        //    };
-
-        //            var userRoles = await _userManager.GetRolesAsync(user);
-
-        //            //We Add Roles To The List
-        //            foreach (var role in userRoles)
-        //            {
-        //                authClaims.Add(new Claim(ClaimTypes.Role, role));
-        //            }
-
-        //            var jwtToken = GetToken(authClaims);
-
-        //            //Return The Token
-        //            return Ok(new
-        //            {
-        //                token = new JwtSecurityTokenHandler().WriteToken(jwtToken),
-        //                expiration = jwtToken.ValidTo
-        //            });
-        //        }
-        //    }
-        //    return Unauthorized();
-        //}
-
-
-
-
-
 
         [HttpPost]
         [AllowAnonymous]
-
         [Route("forget-password")]
         public async Task<IActionResult> ForgetPassword([Required] string email)
         {
@@ -475,9 +244,15 @@ namespace OnlineLibraryManagementSystem.Controllers
             {
                 var token = await _userManager.GeneratePasswordResetTokenAsync(user);
 
-                var forgotPasswordLink = Url.Action(nameof(ResetPassword), "Authentication", new { token, email = user.Email }, Request.Scheme);
+                var encodedToken = HttpUtility.UrlEncode(token);
 
-                var message = new Message(new string[] { user.Email! }, "Click this below link", forgotPasswordLink!);
+
+
+                var forgotPasswordLink = "http://localhost:4200/reset-password?token="+ encodedToken + "&email="+email;
+
+                //var forgotPasswordLink = Url.Action("ResetPassword", "Authentication", new {token, email = user.Email}, Request.Scheme);
+
+                var message = new Message(new string[] { user.Email! }, "Reset your password", $"<a href='{forgotPasswordLink!}'>Click here to reset your password</a>");
                 _emailService.SendEmail(message);
 
                 return StatusCode(StatusCodes.Status200OK, new Response() { Status = "Success", Message = $"Password Change Request Is Sent to {user.Email}. Please Open Your Gmail And Click The Link." });
@@ -497,19 +272,19 @@ namespace OnlineLibraryManagementSystem.Controllers
             {
                 model
             });
-
-
         }
 
         [HttpPost]
         [AllowAnonymous]
         [Route("reset-password")]
-        public async Task<IActionResult> ResetPassword(ResetPassword resetPassword)
+        public async Task<IActionResult> ResetPassword([FromBody] ResetPassword resetPassword)
         {
             var user = await _userManager.FindByEmailAsync(resetPassword.Email);
             if (user != null)
             {
-                var resetPassResult = await _userManager.ResetPasswordAsync(user, resetPassword.Token, resetPassword.Password);
+                var receivedToken = HttpUtility.UrlDecode(resetPassword.Token);
+                var tokenwithoutspace = receivedToken.Replace(" ", "+");
+                var resetPassResult = await _userManager.ResetPasswordAsync(user, tokenwithoutspace, resetPassword.Password);
 
                 if (!resetPassResult.Succeeded)
                 {

@@ -44,9 +44,10 @@ namespace OnlineLibraryManagementSystem.Models.Admin.Book
         [Range(1, 5, ErrorMessage = "Ratings must be between 1 and 5")]
         public int Ratings { get; set; }        //Ratings
 
-        
+
         // Navigation property
         public ICollection<BookAuthor>? BookAuthors { get; set; } = new HashSet<BookAuthor>();
         public Publisher? Publisher { get; set; }
+        public ICollection<BookImage> BookImages { get; set; } = new HashSet<BookImage>();
     }
 }

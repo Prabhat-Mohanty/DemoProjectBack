@@ -51,14 +51,14 @@ namespace OnlineLibraryManagementSystem.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "2659696c-18b2-42bc-9e46-2721a6c614cf",
+                            Id = "1a985adc-19ac-4e56-a8cd-2112b1aacc08",
                             ConcurrencyStamp = "1",
                             Name = "Admin",
                             NormalizedName = "Admin"
                         },
                         new
                         {
-                            Id = "c364ed5e-1d7b-4a0b-a506-df26d19a79de",
+                            Id = "113b6140-91bb-47d7-af9c-008d8b7d52b7",
                             ConcurrencyStamp = "2",
                             Name = "User",
                             NormalizedName = "User"
@@ -266,6 +266,28 @@ namespace OnlineLibraryManagementSystem.Migrations
                     b.HasIndex("BookId");
 
                     b.ToTable("BookAuthor");
+                });
+
+            modelBuilder.Entity("OnlineLibraryManagementSystem.Models.Admin.Book.BookImage", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("BookId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BookId");
+
+                    b.ToTable("BookImages");
                 });
 
             modelBuilder.Entity("OnlineLibraryManagementSystem.Models.Admin.Book.Publisher", b =>
@@ -477,6 +499,17 @@ namespace OnlineLibraryManagementSystem.Migrations
                     b.Navigation("Book");
                 });
 
+            modelBuilder.Entity("OnlineLibraryManagementSystem.Models.Admin.Book.BookImage", b =>
+                {
+                    b.HasOne("OnlineLibraryManagementSystem.Models.Admin.Book.Book", "Book")
+                        .WithMany("BookImages")
+                        .HasForeignKey("BookId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Book");
+                });
+
             modelBuilder.Entity("OnlineLibraryManagementSystem.Models.Admin.Book.Author", b =>
                 {
                     b.Navigation("Books");
@@ -485,6 +518,8 @@ namespace OnlineLibraryManagementSystem.Migrations
             modelBuilder.Entity("OnlineLibraryManagementSystem.Models.Admin.Book.Book", b =>
                 {
                     b.Navigation("BookAuthors");
+
+                    b.Navigation("BookImages");
                 });
 
             modelBuilder.Entity("OnlineLibraryManagementSystem.Models.Admin.Book.Publisher", b =>
