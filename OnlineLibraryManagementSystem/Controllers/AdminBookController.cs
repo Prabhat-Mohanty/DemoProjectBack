@@ -27,8 +27,91 @@ namespace OnlineLibraryManagementSystem.Controllers
         }
 
         //-------------------------------BOOKS-------------------------------
+        private bool BookExists(int id)
+        {
+            return _context.Books.Any(e => e.Id == id);
+        }
 
-        // GetAllBooksWithAuthorId
+        // For Upload Images
+        [NonAction]
+         private async Task<string?> UploadImageAsync(IFormFile image, string bname)
+        {
+            if (image != null || image!.Length > 0)
+            {
+                string path = _webHostEnvironment.WebRootPath + "\\bookImages\\" + bname + "\\";
+                string fileName = image.FileName;
+
+                if (!Directory.Exists(path))
+                {
+                    Directory.CreateDirectory(path);
+                }
+
+                var filePath = Path.Combine(path, fileName);
+
+                using (FileStream fileStream = System.IO.File.Create(filePath))
+                {
+                    await image.CopyToAsync(fileStream);
+                    fileStream.Flush();
+                    return filePath;
+                }
+            }
+            return null;
+        }
+        
+        //  For Update Uploaded Images
+        int counter = 0;
+        [NonAction]
+        private async Task<string?> UploadUpdatedImageAsync(IFormFile image, string bname)
+        {
+            if (image != null || image!.Length > 0)
+            {
+                string path = _webHostEnvironment.WebRootPath + "\\bookImages\\" + bname + "\\";
+                string fileName = image.FileName;
+
+                if (!Directory.Exists(path))
+                {
+                    Directory.CreateDirectory(path);
+                }
+                else if (counter == 0)
+                {
+                    Directory.Delete(path, true);
+                    Directory.CreateDirectory(path);
+                    counter++;
+                }
+
+
+                var filePath = Path.Combine(path, fileName);
+
+                using (FileStream fileStream = System.IO.File.Create(filePath))
+                {
+                    await image.CopyToAsync(fileStream);
+                    fileStream.Flush();
+                    return filePath;
+                }
+            }
+            return null;
+        }
+
+        //  For Deleting Uploaded Images
+        [NonAction]
+        private string? DeleteUploadedImageAsync(string bname)
+        {
+            if (bname != null || bname!.Length > 0)
+            {
+                string path = _webHostEnvironment.WebRootPath + "\\bookImages\\" + bname + "\\";
+
+                if (Directory.Exists(path))
+                {
+                    Directory.Delete(path, true);
+
+                    return "book deleted succesfully";
+                }
+            }
+            return null;
+        }
+
+        //-------------------------------MainActions-------------------------------
+        //  GetAllBooksWithAuthorId
         [HttpGet]
         [Route("getAllBooksWithAuthorId")]
         public async Task<IActionResult> GetAllBooksWithAuthorId()
@@ -66,6 +149,53 @@ namespace OnlineLibraryManagementSystem.Controllers
         }
 
 
+        //  GetBookById
+        [HttpGet]
+        [Route("GetBookById/{id}")]
+        public async Task<IActionResult> GetBookById(int id)
+        {
+            try
+            {
+                var bookExists = BookExists(id);
+
+                if (bookExists)
+                {
+                    var book = await _context.Books
+                        .Where(b => b.Id == id)
+                    .Include(b => b.BookAuthors!)
+                    .ThenInclude(ba => ba.Author)
+                    .Include(b => b.BookImages)
+                    .Select(x => new
+                    {
+                        BookName = x.BookName!,
+                        Genre = x.Genre!,
+                        PublisherId = x.PublisherId!,
+                        PublishDate = x.PublishDate!,
+                        Language = x.Language!,
+                        Edition = x.Edition!,
+                        BookCost = x.BookCost!,
+                        NumberOfPages = x.NumberOfPages!,
+                        Description = x.Description!,
+                        ActualStocks = x.ActualStocks!,
+                        Ratings = x.Ratings!,
+                        AuthorIds = x.BookAuthors!.Select(ba => ba.AuthorId).ToList(),
+                        Images = x.BookImages.Select(b => b.ImageUrl).ToList(),
+                    })
+                    .FirstOrDefaultAsync();
+
+                    return Ok(book);
+                }
+
+                return NotFound($"Book with Id = '{id}' not found.");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex}");
+            }
+        }
+
+
+        // AddBook
         [HttpPost]
         [Route("addbook")]
         public async Task<IActionResult> AddBook([FromForm] BookVM addBookVM, List<IFormFile> images)
@@ -151,31 +281,8 @@ namespace OnlineLibraryManagementSystem.Controllers
             }
         }
 
-        [NonAction]
-        private async Task<string?> UploadImageAsync(IFormFile image, string bname)
-        {
-            if (image != null || image!.Length > 0)
-            {
-                string path = _webHostEnvironment.WebRootPath + "\\bookImages\\" + bname + "\\";
-                string fileName = image.FileName;
 
-                if (!Directory.Exists(path))
-                {
-                    Directory.CreateDirectory(path);
-                }
-
-                var filePath = Path.Combine(path, fileName);
-
-                using (FileStream fileStream = System.IO.File.Create(filePath))
-                {
-                    await image.CopyToAsync(fileStream);
-                    fileStream.Flush();
-                    return filePath;
-                }
-            }
-            return null;
-        }
-
+        //  UpdateBook
         [HttpPut]
         [Route("updatebook/{id}")]
         public async Task<IActionResult> UpdateBook(int id, [FromForm] BookVM bookVM, List<IFormFile> images)
@@ -275,44 +382,6 @@ namespace OnlineLibraryManagementSystem.Controllers
             }
         }
 
-        int counter = 0;
-        [NonAction]
-        private async Task<string?> UploadUpdatedImageAsync(IFormFile image, string bname)
-        {
-            if (image != null || image!.Length > 0)
-            {
-                string path = _webHostEnvironment.WebRootPath + "\\bookImages\\" + bname + "\\";
-                string fileName = image.FileName;
-
-                if (!Directory.Exists(path))
-                {
-                    Directory.CreateDirectory(path);
-                }
-                else if (counter == 0)
-                {
-                    Directory.Delete(path, true);
-                    Directory.CreateDirectory(path);
-                    counter++;
-                }
-
-
-                var filePath = Path.Combine(path, fileName);
-
-                using (FileStream fileStream = System.IO.File.Create(filePath))
-                {
-                    await image.CopyToAsync(fileStream);
-                    fileStream.Flush();
-                    return filePath;
-                }
-            }
-            return null;
-        }
-
-        private bool BookExists(int id)
-        {
-            return _context.Books.Any(e => e.Id == id);
-        }
-
         //DeleteBookById
         [HttpDelete]
         [Route("deleteBook/{id}")]
@@ -340,24 +409,6 @@ namespace OnlineLibraryManagementSystem.Controllers
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, $"Error deleting book: {ex.Message}");
             }
-        }
-
-
-        [NonAction]
-        private string? DeleteUploadedImageAsync(string bname)
-        {
-            if (bname != null || bname!.Length > 0)
-            {
-                string path = _webHostEnvironment.WebRootPath + "\\bookImages\\" + bname + "\\";
-
-                if (Directory.Exists(path))
-                {
-                    Directory.Delete(path, true);
-
-                    return "book deleted succesfully";
-                }
-            }
-            return null;
         }
 
 
