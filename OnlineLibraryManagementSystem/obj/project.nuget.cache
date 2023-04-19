@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "6Exg1QhebU3ECuJbOya3hr2FrVppFrcP63r5gRNxkIkLPa7cNi8gNxH/iDUye9P9QjwCXpTsVEyRwgB8ZB4r7Q==",
+  "dgSpecHash": "OwxMjabglqWNCqVujDMcCIdJ8UG1GV8wi58+/x/fnhwDY5HLTuViXKy+dG/H3pjZ2n+9A1MqUC5tyxmY7elOxw==",
   "success": true,
   "projectFilePath": "C:\\Users\\lcom\\Desktop\\MCAProject\\OnlineLibraryManagementSystem\\OnlineLibraryManagementSystem\\OnlineLibraryManagementSystem.csproj",
   "expectedPackageFiles": [
@@ -10,7 +10,9 @@
     "C:\\Users\\lcom\\.nuget\\packages\\microsoft.aspnetcore.cryptography.internal\\6.0.10\\microsoft.aspnetcore.cryptography.internal.6.0.10.nupkg.sha512",
     "C:\\Users\\lcom\\.nuget\\packages\\microsoft.aspnetcore.cryptography.keyderivation\\6.0.10\\microsoft.aspnetcore.cryptography.keyderivation.6.0.10.nupkg.sha512",
     "C:\\Users\\lcom\\.nuget\\packages\\microsoft.aspnetcore.identity.entityframeworkcore\\6.0.10\\microsoft.aspnetcore.identity.entityframeworkcore.6.0.10.nupkg.sha512",
-    "C:\\Users\\lcom\\.nuget\\packages\\microsoft.csharp\\4.5.0\\microsoft.csharp.4.5.0.nupkg.sha512",
+    "C:\\Users\\lcom\\.nuget\\packages\\microsoft.aspnetcore.jsonpatch\\6.0.10\\microsoft.aspnetcore.jsonpatch.6.0.10.nupkg.sha512",
+    "C:\\Users\\lcom\\.nuget\\packages\\microsoft.aspnetcore.mvc.newtonsoftjson\\6.0.10\\microsoft.aspnetcore.mvc.newtonsoftjson.6.0.10.nupkg.sha512",
+    "C:\\Users\\lcom\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512",
     "C:\\Users\\lcom\\.nuget\\packages\\microsoft.data.sqlclient\\2.1.4\\microsoft.data.sqlclient.2.1.4.nupkg.sha512",
     "C:\\Users\\lcom\\.nuget\\packages\\microsoft.data.sqlclient.sni.runtime\\2.1.1\\microsoft.data.sqlclient.sni.runtime.2.1.1.nupkg.sha512",
     "C:\\Users\\lcom\\.nuget\\packages\\microsoft.entityframeworkcore\\6.0.10\\microsoft.entityframeworkcore.6.0.10.nupkg.sha512",
@@ -44,6 +46,8 @@
     "C:\\Users\\lcom\\.nuget\\packages\\microsoft.win32.systemevents\\4.7.0\\microsoft.win32.systemevents.4.7.0.nupkg.sha512",
     "C:\\Users\\lcom\\.nuget\\packages\\mimekit\\3.2.0\\mimekit.3.2.0.nupkg.sha512",
     "C:\\Users\\lcom\\.nuget\\packages\\netcore.mailkit\\2.1.0\\netcore.mailkit.2.1.0.nupkg.sha512",
+    "C:\\Users\\lcom\\.nuget\\packages\\newtonsoft.json\\13.0.1\\newtonsoft.json.13.0.1.nupkg.sha512",
+    "C:\\Users\\lcom\\.nuget\\packages\\newtonsoft.json.bson\\1.0.2\\newtonsoft.json.bson.1.0.2.nupkg.sha512",
     "C:\\Users\\lcom\\.nuget\\packages\\portable.bouncycastle\\1.9.0\\portable.bouncycastle.1.9.0.nupkg.sha512",
     "C:\\Users\\lcom\\.nuget\\packages\\swashbuckle.aspnetcore\\6.2.3\\swashbuckle.aspnetcore.6.2.3.nupkg.sha512",
     "C:\\Users\\lcom\\.nuget\\packages\\swashbuckle.aspnetcore.swagger\\6.2.3\\swashbuckle.aspnetcore.swagger.6.2.3.nupkg.sha512",

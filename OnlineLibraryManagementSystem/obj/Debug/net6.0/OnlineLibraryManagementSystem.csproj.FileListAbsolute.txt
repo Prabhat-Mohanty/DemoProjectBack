@@ -78,3 +78,7 @@ C:\Users\lcom\Desktop\MCAProject\OnlineLibraryManagementSystem\OnlineLibraryMana
 C:\Users\lcom\Desktop\MCAProject\OnlineLibraryManagementSystem\OnlineLibraryManagementSystem\obj\Debug\net6.0\OnlineLibraryManagementSystem.pdb
 C:\Users\lcom\Desktop\MCAProject\OnlineLibraryManagementSystem\OnlineLibraryManagementSystem\obj\Debug\net6.0\OnlineLibraryManagementSystem.genruntimeconfig.cache
 C:\Users\lcom\Desktop\MCAProject\OnlineLibraryManagementSystem\OnlineLibraryManagementSystem\obj\Debug\net6.0\ref\OnlineLibraryManagementSystem.dll
+C:\Users\lcom\Desktop\MCAProject\OnlineLibraryManagementSystem\OnlineLibraryManagementSystem\bin\Debug\net6.0\Microsoft.AspNetCore.JsonPatch.dll
+C:\Users\lcom\Desktop\MCAProject\OnlineLibraryManagementSystem\OnlineLibraryManagementSystem\bin\Debug\net6.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+C:\Users\lcom\Desktop\MCAProject\OnlineLibraryManagementSystem\OnlineLibraryManagementSystem\bin\Debug\net6.0\Newtonsoft.Json.dll
+C:\Users\lcom\Desktop\MCAProject\OnlineLibraryManagementSystem\OnlineLibraryManagementSystem\bin\Debug\net6.0\Newtonsoft.Json.Bson.dll

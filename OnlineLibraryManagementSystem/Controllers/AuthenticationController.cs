@@ -88,7 +88,7 @@ namespace OnlineLibraryManagementSystem.Controllers
 
             var token = await _userManager.GenerateEmailConfirmationTokenAsync(user).ConfigureAwait(false);
             var confirmationLink = Url.Action(nameof(ConfirmEmail), "Authentication", new { token, email = user.Email }, Request.Scheme);
-            var message = new Message(new string[] { user.Email! }, "Confirmation email link", confirmationLink!);
+            var message = new Message(new string[] { user.Email! }, "Confirmation email link", $"<a href='{confirmationLink!}'>Click here to reset your password</a>");
             _emailService.SendEmail(message);
 
             return StatusCode(StatusCodes.Status200OK, new Response { Status = "Success", Message = $"User created & Email has sent to {user.Email} Successfully!!" });

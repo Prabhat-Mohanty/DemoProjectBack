@@ -1,6 +1,42 @@
 {
   "Files": [
     {
+      "Id": "C:\\Users\\lcom\\Desktop\\MCAProject\\OnlineLibraryManagementSystem\\OnlineLibraryManagementSystem\\wwwroot\\bookImages\\B1\\Screenshot (11).png",
+      "PackagePath": "staticwebassets\\bookImages\\B1\\Screenshot (11).png"
+    },
+    {
+      "Id": "C:\\Users\\lcom\\Desktop\\MCAProject\\OnlineLibraryManagementSystem\\OnlineLibraryManagementSystem\\wwwroot\\bookImages\\B1\\Screenshot (12).png",
+      "PackagePath": "staticwebassets\\bookImages\\B1\\Screenshot (12).png"
+    },
+    {
+      "Id": "C:\\Users\\lcom\\Desktop\\MCAProject\\OnlineLibraryManagementSystem\\OnlineLibraryManagementSystem\\wwwroot\\bookImages\\B1\\Screenshot (13).png",
+      "PackagePath": "staticwebassets\\bookImages\\B1\\Screenshot (13).png"
+    },
+    {
+      "Id": "C:\\Users\\lcom\\Desktop\\MCAProject\\OnlineLibraryManagementSystem\\OnlineLibraryManagementSystem\\wwwroot\\bookImages\\B2\\Screenshot (11).png",
+      "PackagePath": "staticwebassets\\bookImages\\B2\\Screenshot (11).png"
+    },
+    {
+      "Id": "C:\\Users\\lcom\\Desktop\\MCAProject\\OnlineLibraryManagementSystem\\OnlineLibraryManagementSystem\\wwwroot\\bookImages\\B2\\Screenshot (12).png",
+      "PackagePath": "staticwebassets\\bookImages\\B2\\Screenshot (12).png"
+    },
+    {
+      "Id": "C:\\Users\\lcom\\Desktop\\MCAProject\\OnlineLibraryManagementSystem\\OnlineLibraryManagementSystem\\wwwroot\\bookImages\\B2\\Screenshot (13).png",
+      "PackagePath": "staticwebassets\\bookImages\\B2\\Screenshot (13).png"
+    },
+    {
+      "Id": "C:\\Users\\lcom\\Desktop\\MCAProject\\OnlineLibraryManagementSystem\\OnlineLibraryManagementSystem\\wwwroot\\bookImages\\B3\\Screenshot (11).png",
+      "PackagePath": "staticwebassets\\bookImages\\B3\\Screenshot (11).png"
+    },
+    {
+      "Id": "C:\\Users\\lcom\\Desktop\\MCAProject\\OnlineLibraryManagementSystem\\OnlineLibraryManagementSystem\\wwwroot\\bookImages\\B3\\Screenshot (12).png",
+      "PackagePath": "staticwebassets\\bookImages\\B3\\Screenshot (12).png"
+    },
+    {
+      "Id": "C:\\Users\\lcom\\Desktop\\MCAProject\\OnlineLibraryManagementSystem\\OnlineLibraryManagementSystem\\wwwroot\\bookImages\\B3\\Screenshot (13).png",
+      "PackagePath": "staticwebassets\\bookImages\\B3\\Screenshot (13).png"
+    },
+    {
       "Id": "C:\\Users\\lcom\\Desktop\\MCAProject\\OnlineLibraryManagementSystem\\OnlineLibraryManagementSystem\\wwwroot\\bookImages\\BOOKK\\Screenshot (10).png",
       "PackagePath": "staticwebassets\\bookImages\\BOOKK\\Screenshot (10).png"
     },
@@ -129,8 +165,8 @@
       "PackagePath": "staticwebassets\\uploads\\Prabhatmohanty.prabhat.dcs23@vnsgu.ac.in\\ProfilePic.jpg"
     },
     {
-      "Id": "C:\\Users\\lcom\\Desktop\\MCAProject\\OnlineLibraryManagementSystem\\OnlineLibraryManagementSystem\\wwwroot\\uploads\\Prabhatmohantyprabhat91@gmail.com\\ProfilePic.jpg",
-      "PackagePath": "staticwebassets\\uploads\\Prabhatmohantyprabhat91@gmail.com\\ProfilePic.jpg"
+      "Id": "C:\\Users\\lcom\\Desktop\\MCAProject\\OnlineLibraryManagementSystem\\OnlineLibraryManagementSystem\\wwwroot\\uploads\\Prabhatmohantyprabhat91@gmail.com\\IMG-20210915-WA0007.jpg",
+      "PackagePath": "staticwebassets\\uploads\\Prabhatmohantyprabhat91@gmail.com\\IMG-20210915-WA0007.jpg"
     },
     {
       "Id": "obj\\Debug\\net6.0\\staticwebassets\\msbuild.OnlineLibraryManagementSystem.Microsoft.AspNetCore.StaticWebAssets.props",

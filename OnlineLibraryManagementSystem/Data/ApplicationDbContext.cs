@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using OnlineLibraryManagementSystem.Models;
 using OnlineLibraryManagementSystem.Models.Admin.Book;
+using OnlineLibraryManagementSystem.Models.User;
 
 namespace OnlineLibraryManagementSystem.Data
 {
@@ -18,6 +19,7 @@ namespace OnlineLibraryManagementSystem.Data
         public DbSet<BookAuthor> BookAuthor { get; set; } = null!;
         public DbSet<Publisher> Publisher { get; set; }
         public DbSet<BookImage> BookImages { get; set; } = null!;
+        public DbSet<IssueBook> IssueBooks { get; set; } = null!;
 
 
 
