@@ -20,7 +20,7 @@ namespace OnlineLibraryManagementSystem.Data
         public DbSet<Publisher> Publisher { get; set; }
         public DbSet<BookImage> BookImages { get; set; } = null!;
         public DbSet<IssueBook> IssueBooks { get; set; } = null!;
-
+        
 
 
         protected override void OnModelCreating(ModelBuilder builder)

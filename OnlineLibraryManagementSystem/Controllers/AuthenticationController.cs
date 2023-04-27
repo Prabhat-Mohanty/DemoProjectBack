@@ -15,6 +15,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Web;
 using System;
+using OnlineLibraryManagementSystem.ViewModels;
 
 namespace OnlineLibraryManagementSystem.Controllers
 {
@@ -94,7 +95,6 @@ namespace OnlineLibraryManagementSystem.Controllers
             return StatusCode(StatusCodes.Status200OK, new Response { Status = "Success", Message = $"User created & Email has sent to {user.Email} Successfully!!" });
         }
 
-
         [HttpGet]
         public async Task<IActionResult> ConfirmEmail(string token, string email)
         {
@@ -121,7 +121,7 @@ namespace OnlineLibraryManagementSystem.Controllers
                 return BadRequest(ModelState);
             }
 
-            var user =  await _userManager.FindByEmailAsync(registerUser.Email);
+            var user = await _userManager.FindByEmailAsync(registerUser.Email);
 
             user.FirstName = registerUser.FirstName;
             user.LastName = registerUser.LastName;
@@ -196,8 +196,6 @@ namespace OnlineLibraryManagementSystem.Controllers
         {
             // Check the User
             var user = await _userManager.FindByEmailAsync(loginModel.Email);
-            //-------- 
-
 
             // Check the Password
             if (user != null && await _userManager.CheckPasswordAsync(user, loginModel.Password))
@@ -217,7 +215,6 @@ namespace OnlineLibraryManagementSystem.Controllers
                     authClaims.Add(new Claim(ClaimTypes.Role, role));
                 }
 
-
                 //Generate The Token With The Claims
                 var jwtToken = GetToken(authClaims);
 
@@ -234,6 +231,26 @@ namespace OnlineLibraryManagementSystem.Controllers
         }
 
 
+        [Authorize]
+        [HttpPost]
+        [Route("user-reset-password")]
+        public async Task<IActionResult> UserResetPassword(UserResetPasswordVM userResetPasswordVM)
+        {
+            var user = await _userManager.FindByEmailAsync(HttpContext.User.Identity!.Name);
+            var checkOldPassword = _userManager.CheckPasswordAsync(user, userResetPasswordVM.oldPassword);
+
+            if (await checkOldPassword)
+            {
+                var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+                var resetPassResult = await _userManager.ResetPasswordAsync(user, token, userResetPasswordVM.newPassword);
+                return StatusCode(StatusCodes.Status200OK, new Response() { Status = "Success", Message = $"Password has been changed." });
+            }
+            else
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, new Response() { Status = "Error", Message = $"Your Old password is not correct, please try again." });
+            }
+        }
+
         [HttpPost]
         [AllowAnonymous]
         [Route("forget-password")]
@@ -246,16 +263,14 @@ namespace OnlineLibraryManagementSystem.Controllers
 
                 var encodedToken = HttpUtility.UrlEncode(token);
 
-
-
-                var forgotPasswordLink = "http://localhost:4200/reset-password?token="+ encodedToken + "&email="+email;
+                var forgotPasswordLink = "http://localhost:4200/reset-password?token=" + encodedToken + "&email=" + email;
 
                 //var forgotPasswordLink = Url.Action("ResetPassword", "Authentication", new {token, email = user.Email}, Request.Scheme);
 
                 var message = new Message(new string[] { user.Email! }, "Reset your password", $"<a href='{forgotPasswordLink!}'>Click here to reset your password</a>");
                 _emailService.SendEmail(message);
 
-                return StatusCode(StatusCodes.Status200OK, new Response() { Status = "Success", Message = $"Password Change Request Is Sent to {user.Email}. Please Open Your Gmail And Click The Link." });
+                return StatusCode(StatusCodes.Status200OK, new Response() { Status = "Success", Message = $"Password change request has been accepted and mail has been sent on {user.Email}. Please check your gmail for further steps." });
             }
             else
             {
@@ -322,6 +337,7 @@ namespace OnlineLibraryManagementSystem.Controllers
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return Ok();
         }
+
 
     }
 }

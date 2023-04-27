@@ -49,5 +49,6 @@ namespace OnlineLibraryManagementSystem.Models.Admin.Book
         public ICollection<BookAuthor>? BookAuthors { get; set; } = new HashSet<BookAuthor>();
         public Publisher? Publisher { get; set; }
         public ICollection<BookImage> BookImages { get; set; } = new HashSet<BookImage>();
+        public BookComment? BookComments { get; set; }
     }
 }

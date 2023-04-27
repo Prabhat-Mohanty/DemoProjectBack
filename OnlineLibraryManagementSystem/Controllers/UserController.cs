@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using OnlineLibraryManagementSystem.Data;
+using OnlineLibraryManagementSystem.Models.Admin.Book;
 using OnlineLibraryManagementSystem.Models.User;
 
 namespace OnlineLibraryManagementSystem.Controllers
@@ -24,6 +25,8 @@ namespace OnlineLibraryManagementSystem.Controllers
         {
             return _context.Books.Any(e => e.Id == id);
         }
+
+
         [HttpPost]
         public async Task<IActionResult> RentABook(IssueBook issueBook)
         {
@@ -44,7 +47,7 @@ namespace OnlineLibraryManagementSystem.Controllers
                     };
 
                     _context.IssueBooks.Add(requestBook);
-                    await _context.SaveChangesAsync();  
+                    await _context.SaveChangesAsync();
                     return Ok(requestBook);
                 }
 
@@ -71,24 +74,26 @@ namespace OnlineLibraryManagementSystem.Controllers
             }
         }
 
-        [HttpPatch]
-        [Route("status/{id}")]
-        public async Task<IActionResult> Approved(int reqid, [FromBody] JsonPatchDocument approvebook)
+        [HttpPost]
+        [Route("Comment/{id}")]
+        public async Task<IActionResult> CommentOnBook(int id, string comment)
         {
-            try
+            var book = await _context.Books.FindAsync(id);
+
+            if (book?.Id != null && comment.Length > 0)
             {
-                var reqBook = await _context.IssueBooks.FindAsync(reqid);
-                if(reqBook != null)
+                var addcomment = new BookComment()
                 {
-                    approvebook.ApplyTo(reqBook);
-                    await _context.SaveChangesAsync();
-                }
-                return Ok(reqBook);
+                    BookId = book.Id,
+                    UserEmail = HttpContext.User.Identity!.Name!,
+                    Comment = comment
+                };
+
+                //_context.BookComments.Add(addcomment);
+                await _context.SaveChangesAsync();
+                return Ok("Comment Added Successfully");
             }
-            catch(Exception ex)
-            {
-                return StatusCode(500, $"Internal server error: {ex}");
-            }
+            return NotFound($"Book with id = {id} not found");
         }
     }
 }

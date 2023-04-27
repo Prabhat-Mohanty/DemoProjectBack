@@ -1,5 +1,6 @@
 ﻿using Humanizer.Localisation;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure.Internal;
@@ -7,7 +8,9 @@ using OnlineLibraryManagementSystem.Data;
 using OnlineLibraryManagementSystem.Models.Admin.Book;
 using OnlineLibraryManagementSystem.Models.Authentication.SignUp;
 using OnlineLibraryManagementSystem.ViewModels;
+using System;
 using System.Net;
+using System.Text;
 using System.Xml.Linq;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
@@ -34,7 +37,7 @@ namespace OnlineLibraryManagementSystem.Controllers
 
         // For Upload Images
         [NonAction]
-         private async Task<string?> UploadImageAsync(IFormFile image, string bname)
+        private async Task<string?> UploadImageAsync(IFormFile image, string bname)
         {
             if (image != null || image!.Length > 0)
             {
@@ -52,12 +55,13 @@ namespace OnlineLibraryManagementSystem.Controllers
                 {
                     await image.CopyToAsync(fileStream);
                     fileStream.Flush();
-                    return filePath;
+                    //return filePath;
+                    return "bookImages/" + bname +"/"+ fileName;
                 }
             }
             return null;
         }
-        
+
         //  For Update Uploaded Images
         int counter = 0;
         [NonAction]
@@ -86,7 +90,7 @@ namespace OnlineLibraryManagementSystem.Controllers
                 {
                     await image.CopyToAsync(fileStream);
                     fileStream.Flush();
-                    return filePath;
+                    return "bookImages/" + bname + "/" + fileName;
                 }
             }
             return null;
@@ -124,6 +128,7 @@ namespace OnlineLibraryManagementSystem.Controllers
                 .Include(b => b.BookImages)
                 .Select(x => new
                 {
+                    Id = x.Id,
                     BookName = x.BookName!,
                     Genre = x.Genre!,
                     PublisherId = x.PublisherId!,
@@ -167,6 +172,7 @@ namespace OnlineLibraryManagementSystem.Controllers
                     .Include(b => b.BookImages)
                     .Select(x => new
                     {
+                        Id = x.Id,
                         BookName = x.BookName!,
                         Genre = x.Genre!,
                         PublisherId = x.PublisherId!,
@@ -281,7 +287,6 @@ namespace OnlineLibraryManagementSystem.Controllers
             }
         }
 
-
         //  UpdateBook
         [HttpPut]
         [Route("updatebook/{id}")]
@@ -386,7 +391,7 @@ namespace OnlineLibraryManagementSystem.Controllers
         [HttpDelete]
         [Route("deleteBook/{id}")]
         public async Task<IActionResult> DeleteBookById(int id)
-        {
+            {
             try
             {
                 var book = await _context.Books.FindAsync(id);
@@ -410,6 +415,60 @@ namespace OnlineLibraryManagementSystem.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, $"Error deleting book: {ex.Message}");
             }
         }
+
+
+        // Get Books by Genre
+        [HttpGet]
+        [Route("category")]
+        public async Task<IActionResult> GetBooksByGenre([FromQuery] List<string> genres)
+        {
+            try
+            {
+                var books = await _context.Books.Where(b => genres.Contains(b.Genre))
+                .Include(b => b.BookAuthors!)
+                .ThenInclude(ba => ba.Author)
+                .Include(b => b.BookImages)
+                .Select(x => new
+                {
+                    Id = x.Id,
+                    BookName = x.BookName!,
+                    Genre = x.Genre!,
+                    PublisherId = x.PublisherId!,
+                    PublishDate = x.PublishDate!,
+                    Language = x.Language!,
+                    Edition = x.Edition!,
+                    BookCost = x.BookCost!,
+                    NumberOfPages = x.NumberOfPages!,
+                    Description = x.Description!,
+                    ActualStocks = x.ActualStocks!,
+                    Ratings = x.Ratings!,
+                    AuthorIds = x.BookAuthors!.Select(ba => ba.Author!.AuthorName).ToList(),
+                    Images = x.BookImages.Select(b => b.ImageUrl).ToList(),
+                }).ToListAsync();
+
+
+                if (books != null && books.Count > 0)
+                {
+                    return Ok(books);
+                }
+                StringBuilder myStringBuilder = new StringBuilder("[");
+                foreach (var genre in genres)
+                {
+                    myStringBuilder.Append(genre+",");
+                }
+
+                myStringBuilder.Remove(myStringBuilder.Length - 1,1);
+                myStringBuilder.Insert(myStringBuilder.Length, ']');
+                
+                return NotFound($"Book having this Genres = {myStringBuilder} are not found.");
+            }
+
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex}");
+            }
+        }
+
 
 
         //-------------------------------AUTHOR-------------------------------
@@ -633,6 +692,42 @@ namespace OnlineLibraryManagementSystem.Controllers
             catch (Exception ex)
             {
                 return StatusCode(500, $"An error occurred while deleting the publisher: {ex.Message}");
+            }
+        }
+
+        //-------------------------------ISSUED BOOK-------------------------------
+
+        //GetRequestToBook
+        [HttpGet]
+        [Route("getpendingrequest")]
+        public async Task<IActionResult> GetAllRequest()
+        {
+            var requests = await _context.IssueBooks.ToListAsync();
+            if (requests == null)
+            {
+                return NotFound("No requests");
+            }
+            return Ok(requests);
+        }
+
+
+        [HttpPatch]
+        [Route("status/{id}")]
+        public async Task<IActionResult> Approved(int reqid, [FromBody] JsonPatchDocument approvebook)
+        {
+            try
+            {
+                var reqBook = await _context.IssueBooks.FindAsync(reqid);
+                if (reqBook != null)
+                {
+                    approvebook.ApplyTo(reqBook);
+                    await _context.SaveChangesAsync();
+                }
+                return Ok(reqBook);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex}");
             }
         }
     }

@@ -51,14 +51,14 @@ namespace OnlineLibraryManagementSystem.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "3ed4751f-42a6-4d14-97c4-8bf416a57ba9",
+                            Id = "bad4a07f-4609-4557-95f2-1b19ce317a73",
                             ConcurrencyStamp = "1",
                             Name = "Admin",
                             NormalizedName = "Admin"
                         },
                         new
                         {
-                            Id = "7a53822a-ed4e-4d2e-8046-b9edfb03bcae",
+                            Id = "dd01766c-b193-47d1-a10f-04fc90b42b93",
                             ConcurrencyStamp = "2",
                             Name = "User",
                             NormalizedName = "User"
@@ -266,6 +266,33 @@ namespace OnlineLibraryManagementSystem.Migrations
                     b.HasIndex("BookId");
 
                     b.ToTable("BookAuthor");
+                });
+
+            modelBuilder.Entity("OnlineLibraryManagementSystem.Models.Admin.Book.BookComment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("BookId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Comment")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserEmail")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BookId")
+                        .IsUnique();
+
+                    b.ToTable("BookComment");
                 });
 
             modelBuilder.Entity("OnlineLibraryManagementSystem.Models.Admin.Book.BookImage", b =>
@@ -532,6 +559,17 @@ namespace OnlineLibraryManagementSystem.Migrations
                     b.Navigation("Book");
                 });
 
+            modelBuilder.Entity("OnlineLibraryManagementSystem.Models.Admin.Book.BookComment", b =>
+                {
+                    b.HasOne("OnlineLibraryManagementSystem.Models.Admin.Book.Book", "Book")
+                        .WithOne("BookComments")
+                        .HasForeignKey("OnlineLibraryManagementSystem.Models.Admin.Book.BookComment", "BookId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Book");
+                });
+
             modelBuilder.Entity("OnlineLibraryManagementSystem.Models.Admin.Book.BookImage", b =>
                 {
                     b.HasOne("OnlineLibraryManagementSystem.Models.Admin.Book.Book", "Book")
@@ -551,6 +589,8 @@ namespace OnlineLibraryManagementSystem.Migrations
             modelBuilder.Entity("OnlineLibraryManagementSystem.Models.Admin.Book.Book", b =>
                 {
                     b.Navigation("BookAuthors");
+
+                    b.Navigation("BookComments");
 
                     b.Navigation("BookImages");
                 });
