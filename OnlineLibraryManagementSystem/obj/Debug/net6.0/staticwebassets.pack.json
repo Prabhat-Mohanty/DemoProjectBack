@@ -1,8 +1,44 @@
 {
   "Files": [
     {
+      "Id": "C:\\Users\\lcom\\Desktop\\MCAProject\\OnlineLibraryManagementSystem\\OnlineLibraryManagementSystem\\wwwroot\\bookImages\\B10\\Screenshot (14).png",
+      "PackagePath": "staticwebassets\\bookImages\\B10\\Screenshot (14).png"
+    },
+    {
+      "Id": "C:\\Users\\lcom\\Desktop\\MCAProject\\OnlineLibraryManagementSystem\\OnlineLibraryManagementSystem\\wwwroot\\bookImages\\B11\\Screenshot (14).png",
+      "PackagePath": "staticwebassets\\bookImages\\B11\\Screenshot (14).png"
+    },
+    {
+      "Id": "C:\\Users\\lcom\\Desktop\\MCAProject\\OnlineLibraryManagementSystem\\OnlineLibraryManagementSystem\\wwwroot\\bookImages\\B13\\Screenshot (14).png",
+      "PackagePath": "staticwebassets\\bookImages\\B13\\Screenshot (14).png"
+    },
+    {
+      "Id": "C:\\Users\\lcom\\Desktop\\MCAProject\\OnlineLibraryManagementSystem\\OnlineLibraryManagementSystem\\wwwroot\\bookImages\\B19\\Screenshot (13).png",
+      "PackagePath": "staticwebassets\\bookImages\\B19\\Screenshot (13).png"
+    },
+    {
+      "Id": "C:\\Users\\lcom\\Desktop\\MCAProject\\OnlineLibraryManagementSystem\\OnlineLibraryManagementSystem\\wwwroot\\bookImages\\B19\\Screenshot (14).png",
+      "PackagePath": "staticwebassets\\bookImages\\B19\\Screenshot (14).png"
+    },
+    {
+      "Id": "C:\\Users\\lcom\\Desktop\\MCAProject\\OnlineLibraryManagementSystem\\OnlineLibraryManagementSystem\\wwwroot\\bookImages\\B19\\Screenshot (3).png",
+      "PackagePath": "staticwebassets\\bookImages\\B19\\Screenshot (3).png"
+    },
+    {
       "Id": "C:\\Users\\lcom\\Desktop\\MCAProject\\OnlineLibraryManagementSystem\\OnlineLibraryManagementSystem\\wwwroot\\bookImages\\B1\\10minutes.jpg",
       "PackagePath": "staticwebassets\\bookImages\\B1\\10minutes.jpg"
+    },
+    {
+      "Id": "C:\\Users\\lcom\\Desktop\\MCAProject\\OnlineLibraryManagementSystem\\OnlineLibraryManagementSystem\\wwwroot\\bookImages\\B21\\6.png",
+      "PackagePath": "staticwebassets\\bookImages\\B21\\6.png"
+    },
+    {
+      "Id": "C:\\Users\\lcom\\Desktop\\MCAProject\\OnlineLibraryManagementSystem\\OnlineLibraryManagementSystem\\wwwroot\\bookImages\\B21\\Screenshot (13).png",
+      "PackagePath": "staticwebassets\\bookImages\\B21\\Screenshot (13).png"
+    },
+    {
+      "Id": "C:\\Users\\lcom\\Desktop\\MCAProject\\OnlineLibraryManagementSystem\\OnlineLibraryManagementSystem\\wwwroot\\bookImages\\B21\\adrien-ledoux-mBHuEkka5wM-unsplash.jpg",
+      "PackagePath": "staticwebassets\\bookImages\\B21\\adrien-ledoux-mBHuEkka5wM-unsplash.jpg"
     },
     {
       "Id": "C:\\Users\\lcom\\Desktop\\MCAProject\\OnlineLibraryManagementSystem\\OnlineLibraryManagementSystem\\wwwroot\\bookImages\\B2\\10minutes.jpg",
@@ -15,6 +51,18 @@
     {
       "Id": "C:\\Users\\lcom\\Desktop\\MCAProject\\OnlineLibraryManagementSystem\\OnlineLibraryManagementSystem\\wwwroot\\bookImages\\B3\\Screenshot (14).png",
       "PackagePath": "staticwebassets\\bookImages\\B3\\Screenshot (14).png"
+    },
+    {
+      "Id": "C:\\Users\\lcom\\Desktop\\MCAProject\\OnlineLibraryManagementSystem\\OnlineLibraryManagementSystem\\wwwroot\\bookImages\\Book43\\b3.jpg",
+      "PackagePath": "staticwebassets\\bookImages\\Book43\\b3.jpg"
+    },
+    {
+      "Id": "C:\\Users\\lcom\\Desktop\\MCAProject\\OnlineLibraryManagementSystem\\OnlineLibraryManagementSystem\\wwwroot\\bookImages\\Book43\\b7.jpg",
+      "PackagePath": "staticwebassets\\bookImages\\Book43\\b7.jpg"
+    },
+    {
+      "Id": "C:\\Users\\lcom\\Desktop\\MCAProject\\OnlineLibraryManagementSystem\\OnlineLibraryManagementSystem\\wwwroot\\bookImages\\MyBook\\Untitled Workspace.png",
+      "PackagePath": "staticwebassets\\bookImages\\MyBook\\Untitled Workspace.png"
     },
     {
       "Id": "C:\\Users\\lcom\\Desktop\\MCAProject\\OnlineLibraryManagementSystem\\OnlineLibraryManagementSystem\\wwwroot\\images\\ProfilePic.jpg",
@@ -37,12 +85,28 @@
       "PackagePath": "staticwebassets\\images\\Screenshot (6)_20230417142123352.png"
     },
     {
+      "Id": "C:\\Users\\lcom\\Desktop\\MCAProject\\OnlineLibraryManagementSystem\\OnlineLibraryManagementSystem\\wwwroot\\uploads\\AdminTwoadmin2@gmail.com\\ProfilePic.jpg",
+      "PackagePath": "staticwebassets\\uploads\\AdminTwoadmin2@gmail.com\\ProfilePic.jpg"
+    },
+    {
+      "Id": "C:\\Users\\lcom\\Desktop\\MCAProject\\OnlineLibraryManagementSystem\\OnlineLibraryManagementSystem\\wwwroot\\uploads\\Adminadmin@gmail.com\\ProfilePic.jpg",
+      "PackagePath": "staticwebassets\\uploads\\Adminadmin@gmail.com\\ProfilePic.jpg"
+    },
+    {
       "Id": "C:\\Users\\lcom\\Desktop\\MCAProject\\OnlineLibraryManagementSystem\\OnlineLibraryManagementSystem\\wwwroot\\uploads\\FSDFDtestingmDaiddl@gmail.com\\ProfilePic.jpg",
       "PackagePath": "staticwebassets\\uploads\\FSDFDtestingmDaiddl@gmail.com\\ProfilePic.jpg"
     },
     {
       "Id": "C:\\Users\\lcom\\Desktop\\MCAProject\\OnlineLibraryManagementSystem\\OnlineLibraryManagementSystem\\wwwroot\\uploads\\Montumohanty.prabhat.dcs23@vnsgu.ac.in\\ProfilePic.jpg",
       "PackagePath": "staticwebassets\\uploads\\Montumohanty.prabhat.dcs23@vnsgu.ac.in\\ProfilePic.jpg"
+    },
+    {
+      "Id": "C:\\Users\\lcom\\Desktop\\MCAProject\\OnlineLibraryManagementSystem\\OnlineLibraryManagementSystem\\wwwroot\\uploads\\NewNamemohantyprabhat91@gmail.com\\adrien-ledoux-mBHuEkka5wM-unsplash.jpg",
+      "PackagePath": "staticwebassets\\uploads\\NewNamemohantyprabhat91@gmail.com\\adrien-ledoux-mBHuEkka5wM-unsplash.jpg"
+    },
+    {
+      "Id": "C:\\Users\\lcom\\Desktop\\MCAProject\\OnlineLibraryManagementSystem\\OnlineLibraryManagementSystem\\wwwroot\\uploads\\Pankajmohantyprabhat91@gmail.com\\home-bg-1-img.png",
+      "PackagePath": "staticwebassets\\uploads\\Pankajmohantyprabhat91@gmail.com\\home-bg-1-img.png"
     },
     {
       "Id": "C:\\Users\\lcom\\Desktop\\MCAProject\\OnlineLibraryManagementSystem\\OnlineLibraryManagementSystem\\wwwroot\\uploads\\Prabhatmail123@gmail.com\\18.png",
@@ -83,6 +147,10 @@
     {
       "Id": "C:\\Users\\lcom\\Desktop\\MCAProject\\OnlineLibraryManagementSystem\\OnlineLibraryManagementSystem\\wwwroot\\uploads\\dvfdfvemail@test.com\\ProfilePic.jpg",
       "PackagePath": "staticwebassets\\uploads\\dvfdfvemail@test.com\\ProfilePic.jpg"
+    },
+    {
+      "Id": "C:\\Users\\lcom\\Desktop\\MCAProject\\OnlineLibraryManagementSystem\\OnlineLibraryManagementSystem\\wwwroot\\uploads\\dvfdfvmohantyprabhat91@gmail.com\\adrien-ledoux-mBHuEkka5wM-unsplash.jpg",
+      "PackagePath": "staticwebassets\\uploads\\dvfdfvmohantyprabhat91@gmail.com\\adrien-ledoux-mBHuEkka5wM-unsplash.jpg"
     },
     {
       "Id": "C:\\Users\\lcom\\Desktop\\MCAProject\\OnlineLibraryManagementSystem\\OnlineLibraryManagementSystem\\wwwroot\\uploads\\dvfdfvtestingmail@gmail.com\\ProfilePic.jpg",

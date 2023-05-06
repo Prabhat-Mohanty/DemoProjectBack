@@ -29,7 +29,6 @@ namespace OnlineLibraryManagementSystem.Controllers
             _webHostEnvironment = webHostEnvironment;
         }
 
-        //-------------------------------BOOKS-------------------------------
         private bool BookExists(int id)
         {
             return _context.Books.Any(e => e.Id == id);
@@ -56,7 +55,7 @@ namespace OnlineLibraryManagementSystem.Controllers
                     await image.CopyToAsync(fileStream);
                     fileStream.Flush();
                     //return filePath;
-                    return "bookImages/" + bname +"/"+ fileName;
+                    return "bookImages/" + bname + "/" + fileName;
                 }
             }
             return null;
@@ -115,6 +114,9 @@ namespace OnlineLibraryManagementSystem.Controllers
         }
 
         //-------------------------------MainActions-------------------------------
+        
+        //-------------------------------BOOKS-------------------------------
+        
         //  GetAllBooksWithAuthorId
         [HttpGet]
         [Route("getAllBooksWithAuthorId")]
@@ -125,13 +127,15 @@ namespace OnlineLibraryManagementSystem.Controllers
                 var books = await _context.Books
                 .Include(b => b.BookAuthors!)
                 .ThenInclude(ba => ba.Author)
+                .Include(p => p.Publisher!)
                 .Include(b => b.BookImages)
                 .Select(x => new
                 {
                     Id = x.Id,
                     BookName = x.BookName!,
                     Genre = x.Genre!,
-                    PublisherId = x.PublisherId!,
+                    //PublisherId = x.PublisherId!,
+                    PublisherId = x.Publisher!.PublisherName,
                     PublishDate = x.PublishDate!,
                     Language = x.Language!,
                     Edition = x.Edition!,
@@ -140,11 +144,11 @@ namespace OnlineLibraryManagementSystem.Controllers
                     Description = x.Description!,
                     ActualStocks = x.ActualStocks!,
                     Ratings = x.Ratings!,
-                    AuthorIds = x.BookAuthors!.Select(ba => ba.AuthorId).ToList(),
+                    AuthorIds = x.BookAuthors!.Select(ba => ba.Author!.AuthorName).ToList(),
                     Images = x.BookImages.Select(b => b.ImageUrl).ToList(),
                 })
                 .ToListAsync();
-
+                                
                 return Ok(books);
             }
             catch (Exception ex)
@@ -184,7 +188,8 @@ namespace OnlineLibraryManagementSystem.Controllers
                         Description = x.Description!,
                         ActualStocks = x.ActualStocks!,
                         Ratings = x.Ratings!,
-                        AuthorIds = x.BookAuthors!.Select(ba => ba.AuthorId).ToList(),
+                        //AuthorIds = x.BookAuthors!.Select(ba => ba.Author!.AuthorName).ToList(),
+                        AuthorIds = x.BookAuthors!.Select(ba => ba.Author!.AuthorName).ToList(),
                         Images = x.BookImages.Select(b => b.ImageUrl).ToList(),
                     })
                     .FirstOrDefaultAsync();
@@ -391,7 +396,7 @@ namespace OnlineLibraryManagementSystem.Controllers
         [HttpDelete]
         [Route("deleteBook/{id}")]
         public async Task<IActionResult> DeleteBookById(int id)
-            {
+        {
             try
             {
                 var book = await _context.Books.FindAsync(id);
@@ -418,56 +423,56 @@ namespace OnlineLibraryManagementSystem.Controllers
 
 
         // Get Books by Genre
-        [HttpGet]
-        [Route("category")]
-        public async Task<IActionResult> GetBooksByGenre([FromQuery] List<string> genres)
-        {
-            try
-            {
-                var books = await _context.Books.Where(b => genres.Contains(b.Genre))
-                .Include(b => b.BookAuthors!)
-                .ThenInclude(ba => ba.Author)
-                .Include(b => b.BookImages)
-                .Select(x => new
-                {
-                    Id = x.Id,
-                    BookName = x.BookName!,
-                    Genre = x.Genre!,
-                    PublisherId = x.PublisherId!,
-                    PublishDate = x.PublishDate!,
-                    Language = x.Language!,
-                    Edition = x.Edition!,
-                    BookCost = x.BookCost!,
-                    NumberOfPages = x.NumberOfPages!,
-                    Description = x.Description!,
-                    ActualStocks = x.ActualStocks!,
-                    Ratings = x.Ratings!,
-                    AuthorIds = x.BookAuthors!.Select(ba => ba.Author!.AuthorName).ToList(),
-                    Images = x.BookImages.Select(b => b.ImageUrl).ToList(),
-                }).ToListAsync();
+        //[HttpGet]
+        //[Route("category")]
+        //public async Task<IActionResult> GetBooksByGenre([FromQuery] List<string> genres, [FromQuery])
+        //{
+        //    try
+        //    {
+        //        var books = await _context.Books.Where(b => genres.Contains(b.Genre))
+        //        .Include(b => b.BookAuthors!)
+        //        .ThenInclude(ba => ba.Author)
+        //        .Include(b => b.BookImages)
+        //        .Select(x => new
+        //        {
+        //            Id = x.Id,
+        //            BookName = x.BookName!,
+        //            Genre = x.Genre!,
+        //            PublisherId = x.PublisherId!,
+        //            PublishDate = x.PublishDate!,
+        //            Language = x.Language!,
+        //            Edition = x.Edition!,
+        //            BookCost = x.BookCost!,
+        //            NumberOfPages = x.NumberOfPages!,
+        //            Description = x.Description!,
+        //            ActualStocks = x.ActualStocks!,
+        //            Ratings = x.Ratings!,
+        //            AuthorIds = x.BookAuthors!.Select(ba => ba.Author!.AuthorName).ToList(),
+        //            Images = x.BookImages.Select(b => b.ImageUrl).ToList(),
+        //        }).ToListAsync();
 
 
-                if (books != null && books.Count > 0)
-                {
-                    return Ok(books);
-                }
-                StringBuilder myStringBuilder = new StringBuilder("[");
-                foreach (var genre in genres)
-                {
-                    myStringBuilder.Append(genre+",");
-                }
+        //        if (books != null && books.Count > 0)
+        //        {
+        //            return Ok(books);
+        //        }
+        //        StringBuilder myStringBuilder = new StringBuilder("[");
+        //        foreach (var genre in genres)
+        //        {
+        //            myStringBuilder.Append(genre+",");
+        //        }
 
-                myStringBuilder.Remove(myStringBuilder.Length - 1,1);
-                myStringBuilder.Insert(myStringBuilder.Length, ']');
-                
-                return NotFound($"Book having this Genres = {myStringBuilder} are not found.");
-            }
+        //        myStringBuilder.Remove(myStringBuilder.Length - 1,1);
+        //        myStringBuilder.Insert(myStringBuilder.Length, ']');
 
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"Internal server error: {ex}");
-            }
-        }
+        //        return NotFound($"Book having this Genres = {myStringBuilder} are not found.");
+        //    }
+
+        //    catch (Exception ex)
+        //    {
+        //        return StatusCode(500, $"Internal server error: {ex}");
+        //    }
+        //}
 
 
 
@@ -475,6 +480,72 @@ namespace OnlineLibraryManagementSystem.Controllers
 
 
         //GetAllAuthor
+
+
+        [HttpGet]
+        [Route("category")]
+        public async Task<IActionResult> GetBooksByGenre([FromQuery] string? search, [FromQuery] List<string> genres)
+        {
+            try
+            {
+                var books = await _context.Books
+            .Where(b => genres.Contains(b.Genre) && (string.IsNullOrEmpty(search) || b.BookName.Contains(search)))
+            .Include(b => b.BookAuthors!)
+            .ThenInclude(ba => ba.Author)
+            .Include(b => b.BookImages)
+            .Select(x => new
+            {
+                Id = x.Id,
+                BookName = x.BookName!,
+                Genre = x.Genre!,
+                PublisherId = x.PublisherId!,
+                PublishDate = x.PublishDate!,
+                Language = x.Language!,
+                Edition = x.Edition!,
+                BookCost = x.BookCost!,
+                NumberOfPages = x.NumberOfPages!,
+                Description = x.Description!,
+                ActualStocks = x.ActualStocks!,
+                Ratings = x.Ratings!,
+                AuthorIds = x.BookAuthors!.Select(ba => ba.Author!.AuthorName).ToList(),
+                Images = x.BookImages.Select(b => b.ImageUrl).ToList(),
+            })
+            .ToListAsync();
+
+                if (books != null && books.Count > 0)
+                {
+                    return Ok(books);
+                }
+
+                StringBuilder myStringBuilder = new StringBuilder("[");
+                foreach (var genre in genres)
+                {
+                    myStringBuilder.Append(genre + ",");
+                }
+                myStringBuilder.Remove(myStringBuilder.Length - 1, 1);
+                myStringBuilder.Insert(myStringBuilder.Length, ']');
+
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex}");
+            }
+        }
+
+        [HttpGet]
+        [Route("getauthorbyid/{id}")]
+        public async Task<IActionResult> GetAuthorById(int id)
+        {
+            var author = await _context.Authors.FindAsync(id);
+
+            if(author == null)
+            {
+                return NotFound();
+            }
+            return Ok(author);
+        }
+
         [HttpGet]
         [Route("getAllAuthor")]
         public async Task<IActionResult> GetAllAuthor()
@@ -520,9 +591,24 @@ namespace OnlineLibraryManagementSystem.Controllers
                 {
                     return Conflict($"Author with name '{author.AuthorName}' already exists.");
                 }
+
                 _context.Authors.Add(author);
                 await _context.SaveChangesAsync();
-                return Ok("Author added successfully.");
+
+                var authors = await _context.Authors.Select(x => new AuthorVM
+                {
+                    //AuthorId = x.Id,
+                    //AuthorName = x.AuthorName,
+
+                    Id = x.Id,
+                    AuthorName = x.AuthorName,
+
+                }).ToListAsync();
+                if (authors == null)
+                {
+                    return NotFound("No Author available.");
+                }
+                return Ok(authors);
             }
             catch (Exception ex)
             {
@@ -534,7 +620,7 @@ namespace OnlineLibraryManagementSystem.Controllers
         //UpdatingAuthorByAuthorId
         [HttpPut]
         [Route("updateAuthor/{id}")]
-        public async Task<IActionResult> UpdateAuthor(int id, [FromBody] AuthorVM author)
+        public async Task<IActionResult> UpdateAuthor(int id, [FromBody] string name)
         {
             try
             {
@@ -544,12 +630,25 @@ namespace OnlineLibraryManagementSystem.Controllers
                     return NotFound("Author Not Exists");
                 }
 
-                existingAuthor.AuthorName = author.AuthorName;
+                existingAuthor.AuthorName = name;
 
                 _context.Authors.Update(existingAuthor!);
                 await _context.SaveChangesAsync();
+                var authors = await _context.Authors.Select(x => new AuthorVM
+                {
+                    //AuthorId = x.Id,
+                    //AuthorName = x.AuthorName,
 
-                return Ok("Author update successfully.");
+                    Id = x.Id,
+                    AuthorName = x.AuthorName,
+
+                }).ToListAsync();
+                if (authors == null)
+                {
+                    return NotFound("No Author available.");
+                }
+                return Ok(authors);
+
             }
             catch (Exception ex)
             {
@@ -574,7 +673,20 @@ namespace OnlineLibraryManagementSystem.Controllers
                 _context.Authors.Remove(author);
                 await _context.SaveChangesAsync();
 
-                return Ok("Author deleted successfully.");
+                var authors = await _context.Authors.Select(x => new AuthorVM
+                {
+                    //AuthorId = x.Id,
+                    //AuthorName = x.AuthorName,
+
+                    Id = x.Id,
+                    AuthorName = x.AuthorName,
+
+                }).ToListAsync();
+                if (authors == null)
+                {
+                    return NotFound("No Author available.");
+                }
+                return Ok(authors);
             }
             catch (Exception ex)
             {
@@ -586,6 +698,20 @@ namespace OnlineLibraryManagementSystem.Controllers
 
         //-------------------------------PUBLISHER-------------------------------
 
+        [HttpGet]
+        [Route("getpublisherbyid/{id}")]
+        public async Task<IActionResult> GetPublisherById(int id)
+        {
+            var publisher = await _context.Publisher.FindAsync(id);
+
+            if (publisher == null)
+            {
+                return NotFound();
+            }
+            return Ok(publisher);
+        }
+
+
         //GetAllAuthor
         [HttpGet]
         [Route("getAllPublisher")]
@@ -595,9 +721,6 @@ namespace OnlineLibraryManagementSystem.Controllers
             {
                 var publisher = await _context.Publisher.Select(x => new PublisherVM
                 {
-                    //AuthorId = x.Id,
-                    //AuthorName = x.AuthorName,
-
                     Id = x.Id,
                     PublisherName = x.PublisherName,
 
@@ -635,7 +758,19 @@ namespace OnlineLibraryManagementSystem.Controllers
                 }
                 _context.Publisher.Add(publisher);
                 await _context.SaveChangesAsync();
-                return Ok("Publisher added successfully.");
+
+                var publishers = await _context.Publisher.Select(x => new PublisherVM
+                {
+                    Id = x.Id,
+                    PublisherName = x.PublisherName,
+
+                }).ToListAsync();
+
+                if (publishers == null)
+                {
+                    return NotFound("No Publisher available.");
+                }
+                return Ok(publishers);
             }
             catch (Exception ex)
             {
@@ -662,7 +797,18 @@ namespace OnlineLibraryManagementSystem.Controllers
                 _context.Publisher.Update(existingPublisher!);
                 await _context.SaveChangesAsync();
 
-                return Ok("Publisher update successfully.");
+                var publishers = await _context.Publisher.Select(x => new PublisherVM
+                {
+                    Id = x.Id,
+                    PublisherName = x.PublisherName,
+
+                }).ToListAsync();
+
+                if (publishers == null)
+                {
+                    return NotFound("No Publisher available.");
+                }
+                return Ok(publishers);
             }
             catch (Exception ex)
             {
@@ -687,7 +833,18 @@ namespace OnlineLibraryManagementSystem.Controllers
                 _context.Publisher.Remove(publisher);
                 await _context.SaveChangesAsync();
 
-                return Ok("Publisher deleted successfully.");
+                var publishers = await _context.Publisher.Select(x => new PublisherVM
+                {
+                    Id = x.Id,
+                    PublisherName = x.PublisherName,
+
+                }).ToListAsync();
+
+                if (publishers == null)
+                {
+                    return NotFound("No Publisher available.");
+                }
+                return Ok(publishers);
             }
             catch (Exception ex)
             {
@@ -702,7 +859,7 @@ namespace OnlineLibraryManagementSystem.Controllers
         [Route("getpendingrequest")]
         public async Task<IActionResult> GetAllRequest()
         {
-            var requests = await _context.IssueBooks.ToListAsync();
+            var requests = await _context.IssueBooks.Where(x => x.status == "pending").ToListAsync();
             if (requests == null)
             {
                 return NotFound("No requests");

@@ -15,7 +15,6 @@ namespace OnlineLibraryManagementSystem.Models.Admin.Book
 
         [Required(ErrorMessage = "Comment is required")]
         public string Comment { get; set; } = string.Empty;
-        
         public Book? Book { get; set; }
     }
 }

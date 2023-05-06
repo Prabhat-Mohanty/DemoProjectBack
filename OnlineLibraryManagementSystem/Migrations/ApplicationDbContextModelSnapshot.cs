@@ -51,14 +51,14 @@ namespace OnlineLibraryManagementSystem.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "bad4a07f-4609-4557-95f2-1b19ce317a73",
+                            Id = "a0e8bda3-81dc-4d6d-b7cb-c716c7cd7f7a",
                             ConcurrencyStamp = "1",
                             Name = "Admin",
                             NormalizedName = "Admin"
                         },
                         new
                         {
-                            Id = "dd01766c-b193-47d1-a10f-04fc90b42b93",
+                            Id = "bd3f973d-76eb-4e65-bfdb-191d2726a963",
                             ConcurrencyStamp = "2",
                             Name = "User",
                             NormalizedName = "User"
@@ -471,6 +471,8 @@ namespace OnlineLibraryManagementSystem.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("BookId");
+
                     b.ToTable("IssueBooks");
                 });
 
@@ -581,6 +583,17 @@ namespace OnlineLibraryManagementSystem.Migrations
                     b.Navigation("Book");
                 });
 
+            modelBuilder.Entity("OnlineLibraryManagementSystem.Models.User.IssueBook", b =>
+                {
+                    b.HasOne("OnlineLibraryManagementSystem.Models.Admin.Book.Book", "Book")
+                        .WithMany("IssueBooks")
+                        .HasForeignKey("BookId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Book");
+                });
+
             modelBuilder.Entity("OnlineLibraryManagementSystem.Models.Admin.Book.Author", b =>
                 {
                     b.Navigation("Books");
@@ -593,6 +606,8 @@ namespace OnlineLibraryManagementSystem.Migrations
                     b.Navigation("BookComments");
 
                     b.Navigation("BookImages");
+
+                    b.Navigation("IssueBooks");
                 });
 
             modelBuilder.Entity("OnlineLibraryManagementSystem.Models.Admin.Book.Publisher", b =>

@@ -16,6 +16,7 @@ using System.Text;
 using System.Web;
 using System;
 using OnlineLibraryManagementSystem.ViewModels;
+using System.Xml.Linq;
 
 namespace OnlineLibraryManagementSystem.Controllers
 {
@@ -114,7 +115,7 @@ namespace OnlineLibraryManagementSystem.Controllers
 
         [HttpPost]
         [Route("updateProfile")]
-        public async Task<IActionResult> UpdateProfile([FromForm] RegisterUser registerUser)
+        public async Task<IActionResult> UpdateProfile([FromForm] UpdateVM registerUser)
         {
             if (!ModelState.IsValid)
             {
@@ -124,8 +125,8 @@ namespace OnlineLibraryManagementSystem.Controllers
             var user = await _userManager.FindByEmailAsync(registerUser.Email);
 
             user.FirstName = registerUser.FirstName;
+            user.MiddleName = registerUser.MiddleName;
             user.LastName = registerUser.LastName;
-            user.Email = registerUser.Email;
             user.PhoneNumber = registerUser.PhoneNumber;
             user.DOB = registerUser.DOB;
             user.Gender = registerUser.Gender;
@@ -136,7 +137,7 @@ namespace OnlineLibraryManagementSystem.Controllers
 
             if (registerUser.ProfilePicture != null)
             {
-                user.ProfilePicture = GetFileName(registerUser);
+                user.ProfilePicture = GetUpdatedFileName(registerUser);
             }
 
             var result = await _userManager.UpdateAsync(user);
@@ -145,17 +146,41 @@ namespace OnlineLibraryManagementSystem.Controllers
             {
                 return Ok(new Response { Status = "Success", Message = "Profile updated successfully!" });
             }
-
             return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Failed to update profile." });
         }
+
+        //[Authorize]
+        //[HttpGet]
+        //[Route("updateProfile")]
+        //public async Task<IActionResult> UpdateProfile([FromQuery] string email)
+        //{
+        //    var user = await _userManager.FindByEmailAsync(email);            
+
+        //    return Ok(user);
+        //}
 
         [Authorize]
         [HttpGet]
         [Route("updateProfile")]
-        public async Task<IActionResult> UpdateProfile()
+        public async Task<IActionResult> UpdateProfile([FromQuery] string email)
         {
-            var user = await _userManager.FindByEmailAsync(HttpContext?.User?.Identity?.Name);
-            return Ok(user);
+            var user = await _userManager.FindByEmailAsync(email);
+            var userResponse = new { 
+                FirstName = user.FirstName, 
+                MiddleName = user.MiddleName,
+                LastName = user.LastName,
+                Gender = user.Gender,
+                PhoneNumber = user.PhoneNumber,
+                Email = user.Email,
+                DOB = user.DOB,
+                State =  user.State,
+                City = user.City,
+                Pincode = user.Pincode,
+                FullAddress = user.FullAddress,
+                ProfilePicture = user.ProfilePicture
+            };
+
+            return Ok(userResponse);
         }
 
 
@@ -183,7 +208,38 @@ namespace OnlineLibraryManagementSystem.Controllers
                 {
                     registerUser.ProfilePicture.CopyTo(fileStream);
                     fileStream.Flush();
-                    return filePath;
+                    return "uploads/" + registerUser.FirstName + registerUser.Email + "/" + fileName;
+                }
+            }
+            return "Not Uploaded";
+        }
+
+
+        [NonAction]
+        private string GetUpdatedFileName(UpdateVM registerUser)
+        {
+            if (registerUser.ProfilePicture != null)
+            {
+                string path = _webHostEnvironment.WebRootPath + "\\uploads\\" + registerUser.FirstName + registerUser.Email + "\\";
+                string fileName = registerUser.ProfilePicture.FileName;
+
+                if (!Directory.Exists(path))
+                {
+                    Directory.CreateDirectory(path);
+                }
+                else
+                {
+                    Directory.Delete(path, true);
+                    Directory.CreateDirectory(path);
+                }
+
+                string filePath = Path.Combine(path, fileName);
+
+                using (FileStream fileStream = System.IO.File.Create(filePath))
+                {
+                    registerUser.ProfilePicture.CopyTo(fileStream);
+                    fileStream.Flush();
+                    return "uploads/" + registerUser.FirstName + registerUser.Email + "/" + fileName;
                 }
             }
             return "Not Uploaded";
@@ -217,7 +273,6 @@ namespace OnlineLibraryManagementSystem.Controllers
 
                 //Generate The Token With The Claims
                 var jwtToken = GetToken(authClaims);
-
 
                 //Return The Token
                 return Ok(new

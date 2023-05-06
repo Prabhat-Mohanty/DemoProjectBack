@@ -13,4 +13,3 @@ namespace OnlineLibraryManagementSystem.Models.Admin.Book
         public ICollection<Book>? Books { get; set; }
     }
 }
-
